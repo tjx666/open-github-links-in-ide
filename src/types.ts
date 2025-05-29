@@ -5,6 +5,7 @@ export type Editor =
   | "vscodium-wsl"
   | "vscode-insiders"
   | "vscode-insiders-wsl"
+  | "cursor"
   | "phpstorm"
   | "intellij-idea"
   | "webstorm"
@@ -40,6 +41,10 @@ export const EDITORS: {
   "vscode-insiders-wsl": {
     name: "VS Code Insiders [WSL]",
     getIcon: (size: IconSize) => `icons/vscode-insiders${size}.png`,
+  },
+  cursor: {
+    name: "Cursor",
+    getIcon: (size: IconSize) => `icons/cursor${size}.png`,
   },
   phpstorm: {
     name: "PhpStorm",

@@ -49,6 +49,11 @@ const run = async () => {
       location.href = url
       return url
     },
+    cursor: (repo: string, file: string, line?: string) => {
+      const url = `cursor://file/${OPTIONS.localPathForRepositories}/${repo}/${file}:${line ?? "1"}`
+      location.href = url
+      return url
+    },
     phpstorm: (repo: string, file: string, line?: string) => {
       const url = `phpstorm://open?file=${OPTIONS.localPathForRepositories}/${repo}/${file}&line=${line ?? "1"}`
       location.href = url
@@ -137,6 +142,99 @@ const run = async () => {
         fileElement.parentNode?.insertBefore(editorIconElement, fileElement.nextSibling)
         addedIconsCounter++
       })
+    }
+
+    // -------------------------------
+    // file header (individual file view)
+    // -------------------------------
+    
+    if (OPTIONS.showIconOnFileBlockHeaders) {
+      // Try to find the specific button container from the provided selector
+      const targetButton = document.querySelector('#StickyHeader > div > div > div[class*="CodeViewHeader"] > div > button')
+      
+      if (targetButton && !targetButton.parentElement?.querySelector('.open-in-ide-icon')) {
+        const currentUrl = window.location.href.split('#')[0] // Remove hash for matching
+        const fileMatch = currentUrl.match(filePathRegExp)
+        
+        debug(`Target button found, URL: ${currentUrl}`)
+        debug(`RegExp match:`, fileMatch)
+        
+        if (fileMatch) {
+          const repo = fileMatch[1]
+          const file = fileMatch[3]
+          
+          // Get line number from URL hash if present
+          const lineMatch = window.location.hash.match(/^#L(\d+)/)
+          const lineNumber = lineMatch ? lineMatch[1] : undefined
+          
+          debug(`Adding icon for repo: ${repo}, file: ${file}, line: ${lineNumber}`)
+          
+          const editorIconElement = generateIconElement(repo, file, lineNumber)
+          editorIconElement.classList.add("open-in-ide-icon-file-header")
+          editorIconElement.style.marginLeft = "8px"
+          editorIconElement.style.display = "inline-block"
+          
+          // Insert the icon next to the target button
+          targetButton.parentElement?.insertBefore(editorIconElement, targetButton.nextSibling)
+          addedIconsCounter++
+        } else {
+          debug(`No match for URL: ${currentUrl}`)
+        }
+      } else {
+        debug(`Target button not found or icon already exists`)
+        
+        // Fallback to original logic if specific selector doesn't work
+        let fileHeader = document.querySelector('[data-testid="breadcrumb"]')?.closest('.Box-header')
+        
+        if (!fileHeader) {
+          // Alternative selectors for file header
+          fileHeader = document.querySelector('.file-header')
+          if (!fileHeader) {
+            fileHeader = document.querySelector('.Box-header.file-header')
+          }
+          if (!fileHeader) {
+            fileHeader = document.querySelector('.js-file-header')
+          }
+          if (!fileHeader) {
+            // Look for any Box-header that contains breadcrumb or file path
+            const headers = document.querySelectorAll('.Box-header')
+            for (const header of headers) {
+              if (header.querySelector('[data-testid="breadcrumb"]') || header.textContent?.includes('/')) {
+                fileHeader = header
+                break
+              }
+            }
+          }
+        }
+        
+        if (fileHeader && !fileHeader.querySelector('.open-in-ide-icon')) {
+          const currentUrl = window.location.href.split('#')[0] // Remove hash for matching
+          const fileMatch = currentUrl.match(filePathRegExp)
+          
+          debug(`Fallback: File header found, URL: ${currentUrl}`)
+          debug(`Fallback: RegExp match:`, fileMatch)
+          
+          if (fileMatch) {
+            const repo = fileMatch[1]
+            const file = fileMatch[3]
+            
+            // Get line number from URL hash if present
+            const lineMatch = window.location.hash.match(/^#L(\d+)/)
+            const lineNumber = lineMatch ? lineMatch[1] : undefined
+            
+            debug(`Fallback: Adding icon for repo: ${repo}, file: ${file}, line: ${lineNumber}`)
+            
+            const editorIconElement = generateIconElement(repo, file, lineNumber)
+            editorIconElement.classList.add("open-in-ide-icon-file-header")
+            editorIconElement.style.marginLeft = "8px"
+            editorIconElement.style.display = "inline-block"
+            
+            // Insert the icon at the end of the header
+            fileHeader.appendChild(editorIconElement)
+            addedIconsCounter++
+          }
+        }
+      }
     }
 
     // --------------------------------------------
