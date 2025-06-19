@@ -295,7 +295,7 @@ const run = async () => {
           !linkElement.parentNode?.querySelector('.open-in-ide-icon')
         ) {
           const editorIconElement = generateIconElement(repo, file, lineNumberForFileBlock)
-
+          editorIconElement.classList.add('open-in-ide-icon-inside-file-header')
           linkElement.parentNode?.insertBefore(editorIconElement, null)
           addedIconsCounter++
         }

@@ -1,5 +1,5 @@
 /* position the icon correctly in file explorer */
-[aria-labelledby="files"].js-navigation-container > .Box-row.js-navigation-item [role="rowheader"] {
+[aria-labelledby='files'].js-navigation-container > .Box-row.js-navigation-item [role='rowheader'] {
   display: flex;
   justify-content: space-between;
 }
@@ -40,4 +40,15 @@ td.blob-num .open-in-ide-icon {
 /* hide the icon when cursor doesn't hover over the row */
 tr:not(:hover) td.blob-num .open-in-ide-icon {
   display: none;
+}
+
+.open-in-ide-icon-inside-file-header {
+  display: none;
+}
+
+.js-comment-container summary:hover .open-in-ide-icon-inside-file-header,
+.js-file .js-file-header:hover .open-in-ide-icon-inside-file-header {
+  display: flex !important;
+  justify-content: flex-end;
+  align-items: center;
 }
