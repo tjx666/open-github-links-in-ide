@@ -31,6 +31,10 @@
   margin-left: 2px;
 }
 
+/* ===========================================
+   LEGACY DOM STRUCTURE SUPPORT (GitHub old version)
+   =========================================== */
+
 /* position the icon correctly instead of the file number */
 td.blob-num .open-in-ide-icon {
   justify-content: flex-end;
@@ -51,4 +55,79 @@ tr:not(:hover) td.blob-num .open-in-ide-icon {
   display: flex !important;
   justify-content: flex-end;
   align-items: center;
+}
+
+/* ===========================================
+   NEW DOM STRUCTURE SUPPORT (GitHub new version)
+   =========================================== */
+
+/* Style for new file header icons */
+.open-in-ide-icon-new-file-header {
+  display: none; /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+}
+
+[class*='DiffFileHeader-module__diff-file-header']:hover .open-in-ide-icon-new-file-header {
+  display: inline-flex; /* Show on hover */
+}
+
+/* Style for new line number icons */
+.open-in-ide-icon-new-line-number {
+  display: none; /* Hidden by default */
+  width: 100%;
+  justify-content: center;
+}
+
+/* When hovering over the table row... */
+tr:hover {
+  /* ...hide the original line number text... */
+  td[class*='diff-line-number'].js-open-in-ide-icon-added > code {
+    display: none;
+  }
+  /* ...and show our icon instead */
+  td[class*='diff-line-number'].js-open-in-ide-icon-added > .open-in-ide-icon-new-line-number {
+    display: flex;
+  }
+}
+
+/* Ensure proper alignment for new structure icons */
+.open-in-ide-icon-new-file-header > img,
+.open-in-ide-icon-new-line-number > img {
+  cursor: pointer;
+  height: 16px;
+}
+
+/* ===========================================
+   INDIVIDUAL FILE VIEW SUPPORT
+   =========================================== */
+
+.react-line-number {
+  position: relative;
+}
+
+.open-in-ide-icon.open-in-ide-icon-blob-header {
+  display: none;
+  align-items: center;
+  margin-right: 8px;
+}
+
+[class*='BlobViewHeader-module__Box']:hover .open-in-ide-icon.open-in-ide-icon-blob-header {
+  display: flex;
+}
+
+.open-in-ide-icon.open-in-ide-icon-blob-line-number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bgColor-default);
+}
+
+.react-line-number:hover .open-in-ide-icon.open-in-ide-icon-blob-line-number {
+  display: flex;
 }
