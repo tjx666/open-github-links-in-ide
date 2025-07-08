@@ -301,7 +301,15 @@ const run = async () => {
       let primaryLinks = document.querySelectorAll<HTMLAnchorElement>('.file a.Link--primary[title]') // in files changed view
 
       if (!primaryLinks.length) {
-        primaryLinks = document.querySelectorAll<HTMLAnchorElement>('.js-comment-container a.Link--primary.text-mono') // in discussion
+        // Collect all discussion links (both regular and outdated)
+        const discussionLinks = document.querySelectorAll<HTMLAnchorElement>(
+          '.js-comment-container a.Link--primary.text-mono',
+        ) // in discussion
+        const outdatedLinks = document.querySelectorAll<HTMLAnchorElement>('summary a.Link--primary.text-mono') // in outdated conversation
+
+        // Combine both types of discussion links
+        const allDiscussionLinks = [...discussionLinks, ...outdatedLinks]
+        primaryLinks = allDiscussionLinks as any as NodeListOf<HTMLAnchorElement>
         inFilesChangedView = false
       }
 
@@ -320,25 +328,31 @@ const run = async () => {
         let lineNumberForFileBlock
 
         const fileElement = linkElement.closest(inFilesChangedView ? '.file' : '.js-comment-container')
+        const summaryElement = linkElement.closest('summary')
 
         if (fileElement) {
           if (!inFilesChangedView) {
             // in discussion
             const lineNumberNodes = fileElement.querySelectorAll('td[data-line-number]')
 
-            if (lineNumberNodes.length === 0) return // length can be equal to zero in case of resolved comment for example
-
-            // get last line number
-            lineNumberForFileBlock = lineNumberNodes[lineNumberNodes.length - 1].getAttribute('data-line-number')
+            if (lineNumberNodes.length > 0) {
+              // get last line number for regular comments
+              lineNumberForFileBlock = lineNumberNodes[lineNumberNodes.length - 1].getAttribute('data-line-number')
+            }
           } else {
+            // in files changed view
             const firstLineNumberNode = fileElement.querySelector(
               'td.blob-num-deletion[data-line-number], td.blob-num-addition[data-line-number]',
             )
             // get first line number
             lineNumberForFileBlock = firstLineNumberNode?.getAttribute('data-line-number')
           }
+        } else if (summaryElement) {
+          // This is an outdated comment in a summary, no line numbers available.
+          // lineNumberForFileBlock remains undefined.
         } else {
           // no line number available
+          return // Exit if no container is found
         }
 
         if (
