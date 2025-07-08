@@ -4,12 +4,45 @@
 
 This browser extension allows you to open files in your IDE directly from GitHub, assuming the repository you are working on is cloned on your computer. When a fragment of a file is displayed, your IDE opens the file and puts the cursor at the desired line.
 
-👉 Google Chrome: https://chrome.google.com/webstore/detail/open-github-in-ide/bmifnnfmccmleigpaolofacllndmfned
+👉 Google Chrome: <https://chrome.google.com/webstore/detail/open-github-in-ide/bmifnnfmccmleigpaolofacllndmfned>
 
-👉 Firefox: https://addons.mozilla.org/firefox/addon/open-github-in-ide/
+👉 Firefox: <https://addons.mozilla.org/firefox/addon/open-github-in-ide/>
+
+## 🚀 Fork 版本更新 (与原版差异)
+
+**注意：这是原项目的 Fork 版本，包含以下额外功能：**
+
+### ✨ 新增 IDE 支持
+
+- **Cursor IDE** - 现已支持最新的 AI 代码编辑器 Cursor
 
 <p align="center">
-	<img src="screenshots/readme.png" />
+	<img src="screenshots/effect.png" alt="Cursor IDE 支持效果图" />
+</p>
+
+### 📦 安装方式 (Fork 版本)
+
+由于这是 Fork 版本，请通过以下方式安装：
+
+1. 访问本仓库的 [Releases](../../releases) 页面或 `build/` 文件夹
+2. 下载对应浏览器的 `.zip` 文件：
+   - Chrome/Edge: 下载 `chrome.zip`
+   - Firefox: 下载 `firefox.zip`
+3. 解压下载的文件
+4. **Chrome/Edge 安装**：
+   - 打开 [chrome://extensions/](chrome://extensions/)
+   - 启用 "开发者模式"
+   - 点击 "加载已解压的扩展程序"
+   - 选择解压后的文件夹
+5. **Firefox 安装**：
+   - 打开 [about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox)
+   - 点击 "临时载入附加组件"
+   - 选择解压文件夹中的 `manifest.json` 文件
+
+---
+
+<p align="center">
+ <img src="screenshots/readme.png" />
 <p>
 
 ## Getting started
@@ -21,8 +54,9 @@ Once the extension is installed:
 - Select the IDE you want to use to open GitHub links
 - Reload GitHub and start using the extension
 
-## Supported IDEs:
+## Supported IDEs
 
+- **Cursor** ⭐ (新增支持)
 - VS Code
 - VSCodium
 - VS Code Insiders
@@ -37,8 +71,8 @@ WSL with the Ubuntu distribution is also supported on VS Code, VSCodium and VS C
 
 PhpStorm & IntelliJ IDEA support is native on MacOS, but on Linux and Windows you need to install an url handler (see [this answer](https://stackoverflow.com/a/56066943/104891)):
 
-- Linux: https://github.com/sanduhrs/phpstorm-url-handler
-- Windows: https://github.com/aik099/PhpStormProtocol
+- Linux: <https://github.com/sanduhrs/phpstorm-url-handler>
+- Windows: <https://github.com/aik099/PhpStormProtocol>
 
 I have not tested WebStorm support yet, feedbacks are welcome!
 
